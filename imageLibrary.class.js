@@ -601,7 +601,7 @@ class ImageLibrary {
 
         const img = document.createElement('img');
         img.src = `${image.img}`;
-        img.alt = `${image?.searchable_text ?? ''}`;
+        img.alt = `${image?.alt_text ?? ''}`;
         img.loading = 'lazy';
         img.width = '78px';
         img.height = '78px';
