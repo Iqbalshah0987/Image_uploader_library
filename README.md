@@ -14,7 +14,7 @@ The **Image Library** is a JavaScript-based module that allows users to upload, 
 Simply include the script in your project and initialize the `ImageLibrary` object with your preferred configuration.
 
 ```html
-<script src="imageLibrary.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Iqbalshah0987/Image_uploader_library@v1.0.1/imageLibrary.class.min.js"></script>
 ```
 
 ## Initialization
