@@ -103,7 +103,7 @@ The library includes default implementations for various actions:
 
 This function loads the image library with images.
 ```javascript
-// response = [{id:1, img:'path'}]
+// response = [{id:1, img:'path', alt_text:'Searchable/Alt Text'}]
 imageLibrary.loadLibraryImages(response);
 // User Can override above method by ``` onLoadLibraryImages ``` define this callback.
 ```
@@ -375,6 +375,12 @@ imageLibrary.loadLibraryImages = function(images) {
 ```javascript
 window.addEventListener('load', get_images);
 ```
+
+## 📁 Notes  
+- **File Organization** – Structured directories and meaningful filenames.  
+- **Formats** – JPEG (photos), PNG (transparency), WebP/AVIF (optimized).
+- **Retrieval & Search** – Supports search, filters.  
+- **Modal Open** – **Double-click** the **plus (+) icon** to open the modal. 
 
 ## Conclusion
 
