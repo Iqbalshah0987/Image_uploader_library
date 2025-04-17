@@ -240,11 +240,41 @@ class ImageLibrary {
 
         let libraryContainerPosition = this.libraryGetCookie('libraryContainerPosition');
         if (libraryContainerPosition != '') {
-            libraryContainerPosition = JSON.parse(libraryContainerPosition);
+            try {
+                libraryContainerPosition = JSON.parse(libraryContainerPosition) || {};
+                const top = parseInt(libraryContainerPosition.top || '5px');
+                const left = parseInt(libraryContainerPosition.left || 'auto');
+                const right = parseInt(libraryContainerPosition.right || '5px');
+                const bottom = parseInt(libraryContainerPosition.bottom || 'auto');
+        
+                const width = parseInt(this.libraryGetCookie('libraryContainerResize')?.width || '350');
+                const height = parseInt(this.libraryGetCookie('libraryContainerResize')?.height || '600');
+        
+                if (
+                    (top && top + height > window.innerHeight) ||
+                    (left && left + width > window.innerWidth) ||
+                    (right && right > window.innerWidth) ||
+                    (bottom && bottom > window.innerHeight)
+                ) {
+                    libraryContainerPosition = {}; // reset to default
+                }
+            } catch (e) {
+                libraryContainerPosition = {};
+            }
         }
         let libraryContainerResize = this.libraryGetCookie('libraryContainerResize');
         if (libraryContainerResize != '') {
-            libraryContainerResize = JSON.parse(libraryContainerResize);
+            try {
+                libraryContainerResize = JSON.parse(libraryContainerResize) || {};
+                if (
+                    parseInt(libraryContainerResize.width || 0) > window.innerWidth ||
+                    parseInt(libraryContainerResize.height || 0) > window.innerHeight
+                ) {
+                    libraryContainerResize = {}; // reset to default size
+                }
+            } catch (e) {
+                libraryContainerResize = {};
+            }
         }
         // Append the container to the body
         const libraryContainer = document.createElement('div');
@@ -547,8 +577,30 @@ class ImageLibrary {
 
         let libraryFloatingButtonPosition = this.libraryGetCookie('libraryFloatingButtonPosition');
         if (libraryFloatingButtonPosition != '') {
-            libraryFloatingButtonPosition = JSON.parse(libraryFloatingButtonPosition) || {};
+            try {
+                libraryFloatingButtonPosition = JSON.parse(libraryFloatingButtonPosition) || {};
+                // Validate position values
+                const top = parseInt(libraryFloatingButtonPosition.top || '100px');
+                const right = parseInt(libraryFloatingButtonPosition.right || '50px');
+                const bottom = parseInt(libraryFloatingButtonPosition.bottom || 'auto');
+                const left = parseInt(libraryFloatingButtonPosition.left || 'auto');
+        
+                const btnWidth = 60;
+                const btnHeight = 60;
+        
+                if (
+                    (top !== undefined && top + btnHeight > window.innerHeight) ||
+                    (left !== undefined && left + btnWidth > window.innerWidth) ||
+                    (right !== undefined && right > window.innerWidth) ||
+                    (bottom !== undefined && bottom > window.innerHeight)
+                ) {
+                    libraryFloatingButtonPosition = {}; // Reset to default
+                }
+            } catch (e) {
+                libraryFloatingButtonPosition = {}; // fallback if JSON parse fails
+            }
         }
+
         const buttonStyle = `
             position: fixed;
             top: ${libraryFloatingButtonPosition?.top ?? '100px'};
