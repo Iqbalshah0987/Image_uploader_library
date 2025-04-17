@@ -15,6 +15,7 @@ Simply include the script in your project and initialize the `ImageLibrary` obje
 
 ```html
 <script src="https://cdn.jsdelivr.net/gh/Iqbalshah0987/Image_uploader_library@v1.0.1/imageLibrary.class.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Iqbalshah0987/Image_uploader_library@v1.0.2/imageLibrary.class.min.js"></script>
 ```
 
 ## Initialization
