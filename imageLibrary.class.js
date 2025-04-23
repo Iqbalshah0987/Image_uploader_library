@@ -242,19 +242,20 @@ class ImageLibrary {
         if (libraryContainerPosition != '') {
             try {
                 libraryContainerPosition = JSON.parse(libraryContainerPosition) || {};
-                const top = parseInt(libraryContainerPosition.top || '5px');
-                const left = parseInt(libraryContainerPosition.left || 'auto');
-                const right = parseInt(libraryContainerPosition.right || '5px');
-                const bottom = parseInt(libraryContainerPosition.bottom || 'auto');
+                
+                const top = parsePixel(libraryContainerPosition.top);
+                const left = parsePixel(libraryContainerPosition.left);
+                const right = parsePixel(libraryContainerPosition.right);
+                const bottom = parsePixel(libraryContainerPosition.bottom);
         
                 const width = parseInt(this.libraryGetCookie('libraryContainerResize')?.width || '350');
                 const height = parseInt(this.libraryGetCookie('libraryContainerResize')?.height || '600');
         
                 if (
-                    (top && top + height > window.innerHeight) ||
-                    (left && left + width > window.innerWidth) ||
-                    (right && right > window.innerWidth) ||
-                    (bottom && bottom > window.innerHeight)
+                    (top !== null && (top + height > window.innerHeight || top < 0)) ||
+                    (left !== null && (left + width > window.innerWidth || left < 0)) ||
+                    (right !== null && right < 0) ||
+                    (bottom !== null && bottom < 0)
                 ) {
                     libraryContainerPosition = {}; // reset to default
                 }
@@ -266,9 +267,12 @@ class ImageLibrary {
         if (libraryContainerResize != '') {
             try {
                 libraryContainerResize = JSON.parse(libraryContainerResize) || {};
+                const width = parseInt(libraryContainerResize.width || 0);
+                const height = parseInt(libraryContainerResize.height || 0);
+
                 if (
-                    parseInt(libraryContainerResize.width || 0) > window.innerWidth ||
-                    parseInt(libraryContainerResize.height || 0) > window.innerHeight
+                    width <= 0 || height <= 0 ||
+                    width > window.innerWidth || height > window.innerHeight
                 ) {
                     libraryContainerResize = {}; // reset to default size
                 }
@@ -569,6 +573,14 @@ class ImageLibrary {
         });
     }
 
+    // Helper to parse pixel values like '356px' safely
+    parsePixel = (val) => {
+        if (typeof val === 'string' && val.endsWith('px')) {
+            return parseInt(val);
+        }
+        return null;
+    };
+
     init_library_floating_button = () => {
 
         const libraryFloatingButton = document.createElement('button');
@@ -579,20 +591,21 @@ class ImageLibrary {
         if (libraryFloatingButtonPosition != '') {
             try {
                 libraryFloatingButtonPosition = JSON.parse(libraryFloatingButtonPosition) || {};
-                // Validate position values
-                const top = parseInt(libraryFloatingButtonPosition.top || '100px');
-                const right = parseInt(libraryFloatingButtonPosition.right || '50px');
-                const bottom = parseInt(libraryFloatingButtonPosition.bottom || 'auto');
-                const left = parseInt(libraryFloatingButtonPosition.left || 'auto');
+                
+                // Parse values with fallback only if they are valid numbers
+                const top = parsePixel(libraryFloatingButtonPosition.top);
+                const right = parsePixel(libraryFloatingButtonPosition.right);
+                const bottom = parsePixel(libraryFloatingButtonPosition.bottom);
+                const left = parsePixel(libraryFloatingButtonPosition.left);
         
                 const btnWidth = 60;
                 const btnHeight = 60;
         
                 if (
-                    (top !== undefined && top + btnHeight > window.innerHeight) ||
-                    (left !== undefined && left + btnWidth > window.innerWidth) ||
-                    (right !== undefined && right > window.innerWidth) ||
-                    (bottom !== undefined && bottom > window.innerHeight)
+                    (top !== null && (top + btnHeight > window.innerHeight || top < 0)) ||
+                    (left !== null && (left + btnWidth > window.innerWidth || left < 0)) ||
+                    (right !== null && right < 0) ||
+                    (bottom !== null && bottom < 0)
                 ) {
                     libraryFloatingButtonPosition = {}; // Reset to default
                 }
